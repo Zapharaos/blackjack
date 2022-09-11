@@ -6,11 +6,33 @@ public class Hand {
 	
 	private Status status;
 	private int value;
+	private boolean ace = false;
+	private boolean first = true;
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
 	public void addCard(Card card)
 	{
 		hand.add(card);
+		if(card.getValue() == Value.ACE)
+		{
+			if(ace)
+			{
+				value += 1;
+				return;
+			}
+			else
+			{
+				ace = true;
+			}
+		}
+		value += card.toValue();
+		
+		if(value > 21 && ace)
+		{
+			ace = false;
+			value -= 10;
+		}
+		
 	}
 	
 	public Card getFirstCard()
@@ -27,7 +49,6 @@ public class Hand {
 	
 	public int getValue()
 	{
-		toValue();
 		return value;
 	}
 	

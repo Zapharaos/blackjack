@@ -31,8 +31,8 @@ public class Card {
    
    public int toValue()
    {
-	   int result = value.ordinal();
-	   if(result > 10 && result <= 13)
+	   int result = value.getValue();
+	   if(result > 11 && result <= 14)
 		   result = 10;
 ;	   return result;
    }
