@@ -15,6 +15,11 @@ public class Player {
 		this.points = points;
 	}
 	
+	public int getId()
+	{
+		return id;
+	}
+	
 	public void addHand()
 	{
 		hands.add(new Hand());

@@ -29,9 +29,17 @@ public class Card {
         this.value = value;
    }
    
+   public int toValue()
+   {
+	   int result = value.ordinal();
+	   if(result > 10 && result <= 13)
+		   result = 10;
+;	   return result;
+   }
+   
    public String toString()
    {
-	   return color + " " + value;
+	   return value.getText() + color.getText();
    }
 	 
 }

@@ -14,7 +14,7 @@ public class Blackjack {
 	public Blackjack( int nb_decks, int nb_players) {
 		this.nb_players = nb_players;
 		for(int i=0; i < nb_players; i++)
-			players.add(new Player());
+			players.add(new Player(i, 100));
 	}
 	
 	public void start()
@@ -37,6 +37,27 @@ public class Blackjack {
 		dealer.addCard(deck.draw(false));
 	}
 	
+	public void display(boolean first)
+	{
+		ArrayList<Hand> hands = new ArrayList<Hand>();
+		for(Player player : players)
+		{
+			hands = player.getHands();
+			for(Hand hand : hands)
+				System.out.println("Player " + player.getId() + " has " + hand.getValue() + " : " + hand.toString());
+		}
+		
+		if(first)
+		{
+			Card dealer = getDealer().getFirstCard();
+			System.out.println( "Dealer has " + dealer.toValue() + " : " + dealer.toString());
+		}
+		else
+		{
+			System.out.println( "Dealer has " + getDealer().getValue() + " : " + getDealer().toString());
+		}
+	}
+	
 	public Hand getDealer()
 	{
 		return dealer;
@@ -50,17 +71,20 @@ public class Blackjack {
 		}
 	}
 	
-	public void debugDealerHand()
+	public void debugDealerHand(boolean all)
 	{
-		System.out.println( "\n Dealer has : " + getDealer().toString());
+		if(all)
+			System.out.println( "\n Dealer has : " + getDealer().toString());
+		else
+			System.out.println( "\n Dealer has : " + getDealer().getFirstCard().toString());
 	}
 	
 	public static void main(String[] args) {
 		
 		Blackjack bj = new Blackjack(1, 1);
 		bj.start();
-		bj.debugPlayerHands();
-		bj.debugDealerHand();
+		bj.display(true);
+		bj.display(false);
 	}
 	
 }

@@ -1,7 +1,6 @@
 
 
 import java.util.ArrayList; // import the ArrayList class
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -33,7 +32,6 @@ public class Deck {
 				for(Value value : Value.values())
 				{
 					if(value == Value.CUT) continue; // cutcard not used in the default deck
-					if(value == Value.ACE) continue; // aces == ones
 					deck.add(new Card(color, value));
 				}	
 			}
