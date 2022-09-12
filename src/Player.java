@@ -22,7 +22,7 @@ public class Player {
 	
 	public void addHand()
 	{
-		hands.add(new Hand());
+		hands.add(new Hand(hands.size() + 1));
 	}
 	
 	public ArrayList<Hand> getHands()

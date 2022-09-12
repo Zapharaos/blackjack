@@ -12,6 +12,7 @@ public class Deck {
 	
 	private int nb_cards = cards;
 	private int nb_decks = 1;
+	private boolean cutcard = false;
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	
 	public Deck() {}
@@ -23,6 +24,7 @@ public class Deck {
 	
 	public void setup() {
 		nb_cards = cards * nb_decks;
+		this.cutcard = false;
 		
 		for(int i = 0; i < nb_decks; i++)
 		{
@@ -57,11 +59,21 @@ public class Deck {
 		Card card = deck.get(cardindex);
 		while(card.getColor() == Color.CUT && card.getValue() == Value.CUT)
 		{
+			if(cutcard)
+			{
+				System.out.println("Cutcard was hit !");
+				this.cutcard = true;
+			}
 			cardindex = random.nextInt(max + 1 - min) + min;
 			card = deck.get(cardindex);
 		}
 		deck.remove(cardindex);
 		return card;
+	}
+	
+	public boolean check()
+	{
+		return cutcard;
 	}
 	
 	public void debug()
