@@ -35,7 +35,7 @@ public class Blackjack {
 		for(Player player : players)
 		{
 			// number of hands per player
-			System.out.println("Player " + player.getId() + " please choose a number of hands");
+			System.out.println("Player " + player.getId() + " please choose a number of hands : ");
 			int nb_hands = sc.nextInt();
 			player.addHand(nb_hands);
 			
@@ -44,7 +44,7 @@ public class Blackjack {
 				// points bet per hand
 				if(player.getPoints() == 0)
 					player.getHands().remove(hand.getId());
-				System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Please choose an amount to bet. You currently have " + player.getPoints() + "💰");
+				System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Please choose an amount to bet. You currently have " + player.getPoints() + "💰.");
 				double points = sc.nextDouble();
 				player.addPoints(points*-1);
 				hand.setBet(points);
@@ -173,7 +173,7 @@ public class Blackjack {
 			for(Hand hand : player.getHands())
 			{
 				
-				System.out.println("\nPlayer " + player.getId() + ", Hand " + hand.getId() + " => Bet 💰 " + hand.getBet() + " ; Value " + hand.getValue() + " : " + hand.toString());
+				System.out.println("\nPlayer " + player.getId() + ", Hand " + hand.getId() + " => Value " + hand.getValue() + " : " + hand.toString());
 				
 				// choose winner
 				if(hand.getStatus() == Hand.Status.STOP)
@@ -188,20 +188,11 @@ public class Blackjack {
 				
 				// results
 				if(hand.getStatus() == Hand.Status.LOST)
-				{
-					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => LOST");
 					player.Lost(hand.getId());
-				}
 				else if(hand.getStatus() == Hand.Status.DRAW)
-				{
-					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => DRAW");
 					player.Draw(hand.getId());
-				}
 				else if(hand.getStatus() == Hand.Status.WON)
-				{
-					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => WON");
 					player.Won(hand.getId());
-				}
 			}
 		}
 		
