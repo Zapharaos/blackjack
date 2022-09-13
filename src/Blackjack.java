@@ -41,18 +41,30 @@ public class Blackjack {
 				if(player.getPoints() == 0)
 					player.getHands().remove(hand.getId());
 				System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Please choose an amount to bet. You currently have " + player.getPoints() + "💰");
-				double points = sc.nextDouble();
+				//double points = sc.nextDouble();
+				double points = 10;
+				player.addPoints(points*-1);
 				hand.setBet(points);
 			}
 		}
 		
-		for(int i=0; i<2; i++)
-		{
-			for(Player player : players)
-				for(Hand hand : player.getHands())
-					hand.addCard(deck.draw(false));
-			dealer.addCard(deck.draw(false));
-		}
+		for(Player player : players)
+			for(Hand hand : player.getHands())
+				hand.addCard(deck.draw(false));
+		dealer.addCard(deck.draw(false));
+		
+		for(Player player : players)
+			for(Hand hand : player.getHands())
+			{
+				hand.addCard(deck.draw(false));
+				
+				if(hand.getValue() == 21 && getDealer().getValue() != 21)
+				{
+					player.Bj(hand.getId());
+					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Amazing Blackjack !");
+				}
+			}
+		dealer.addCard(deck.draw(false));
 		
 		display(true);
 	}
@@ -61,7 +73,6 @@ public class Blackjack {
 	{
 		boolean play = true, first = true;
 		Scanner sc = new Scanner(System.in); 
-		ArrayList<Hand> hands = new ArrayList<Hand>();
 		
 		while(play || first)
 		{
@@ -97,9 +108,15 @@ public class Blackjack {
 						hand.addCard(card);
 						break;
 					case "SPLIT":
-						// TO DO
 						player.splitHand(hand.getId());
-						break;
+						player.addPoints(hand.getBet()*-1);
+						hand.addCard(deck.draw(false));
+						System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " now has a value of " + hand.getValue() + " : " + hand.toString());
+					
+						ArrayList<Hand> hands = player.getHands();
+						hands.get(hands.size()-1).addCard(deck.draw(false));
+						System.out.println("Player " + player.getId() + ", Hand " + hands.get(hands.size()-1).getId() + " now has a value of " + hands.get(hands.size()-1).getValue() + " : " + hands.get(hands.size()-1).toString());
+						continue;
 					}
 					
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " now has a value of " + hand.getValue() + " : " + hand.toString());
@@ -145,7 +162,7 @@ public class Blackjack {
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => DRAW");
 					player.Draw(hand.getId());
 				}
-				else
+				else if(hand.getStatus() == Hand.Status.WON)
 				{
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => WON");
 					player.Won(hand.getId());
@@ -201,7 +218,10 @@ public class Blackjack {
 		Blackjack bj = new Blackjack(nbd, nbp);
 		bj.start();
 		
-		// TODO : sidebets + BJ + new round + fix index issue when drawcard + draw no deck
+		// TODO : sidebets + new round + fix index issue when drawcard + draw no deck
+		// BONUS : stats
+		
+		// DONE :
 	}
 	
 }

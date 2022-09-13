@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Hand {
 
-	enum Status { WAIT, STOP, DRAW, WON, LOST };
+	enum Status { WAIT, STOP, BJ, DRAW, WON, LOST };
 	
 	private Status status = Status.WAIT;
 	private int value;
@@ -102,6 +102,11 @@ public class Hand {
 	public void setBet(double bet)
 	{
 		this.bet = bet;
+	}
+	
+	public void Bj()
+	{
+		status = Status.BJ;
 	}
 	
 	public void Won()
