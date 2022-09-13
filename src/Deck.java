@@ -52,6 +52,8 @@ public class Deck {
 	}
 	
 	public Card draw(boolean cutcard) {
+		if(nb_cards == 0)
+			shuffle();
 		Random random = new Random();
 		int min = 0;
 		int max = nb_cards - 2;
@@ -68,6 +70,7 @@ public class Deck {
 			card = deck.get(cardindex);
 		}
 		deck.remove(cardindex);
+		nb_cards--;
 		return card;
 	}
 	

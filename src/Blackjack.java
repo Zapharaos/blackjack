@@ -245,7 +245,7 @@ public class Blackjack {
 		bj.start();
 		sc.close();
 		
-		// TODO : fix index issue when drawcard + draw no deck
+		// TODO :
 		// BONUS : stats + sidebets
 		
 		// DONE :
