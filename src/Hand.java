@@ -29,6 +29,11 @@ public class Hand {
 		return bet;
 	}
 	
+	public ArrayList<Card> getHand()
+	{
+		return hand;
+	}
+	
 	public void addCard(Card card)
 	{
 		hand.add(card);
@@ -58,6 +63,12 @@ public class Hand {
 			Lost();
 		}
 		
+	}
+	
+	public void split()
+	{
+		value -= hand.get(1).toValue();
+		hand.remove(1);
 	}
 	
 	public Card getFirstCard()
