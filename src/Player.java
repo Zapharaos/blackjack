@@ -34,6 +34,8 @@ public class Player {
 	public void splitHand(int id)
 	{
 		Hand hand = hands.get(id-1);
+		
+		// check split is authorized for this specific hand
 		if(hand.getHand().size() == 2 && hand.getHand().get(0).toValue() == hand.getHand().get(1).toValue())
 		{
 			hand.toValue();
@@ -41,6 +43,7 @@ public class Player {
 			split.setBet(hand.getBet());
 			split.addCard(hand.getHand().get(1));
 			
+			// if split pair of aces : can only hit one card per hand
 			if(hand.getHand().get(0).getValue() == Value.ACE)
 			{
 				hand.setStatus(Hand.Status.STOP);

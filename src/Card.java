@@ -32,7 +32,7 @@ public class Card {
    public int toValue()
    {
 	   int result = value.getValue();
-	   if(result > 11 && result <= 14)
+	   if(result > 11 && result <= 14) // JACK QUEEN KING = 10
 		   result = 10;
 ;	   return result;
    }

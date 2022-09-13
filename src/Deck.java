@@ -59,6 +59,7 @@ public class Deck {
 		int max = nb_cards - 2;
 		int cardindex = random.nextInt(max + 1 - min) + min;
 		Card card = deck.get(cardindex);
+		
 		while(card.getColor() == Color.CUT && card.getValue() == Value.CUT)
 		{
 			if(cutcard)
@@ -77,15 +78,5 @@ public class Deck {
 	public boolean check()
 	{
 		return cutcard;
-	}
-	
-	public void debug()
-	{
-		System.out.println("Using For Loop\n ");
-	      for (int i = 0; i < deck.size();i++) 
-	      { 		      
-	          System.out.println(deck.get(i).toString()); 		
-	      }   
-	}
-	
+	}	
 }

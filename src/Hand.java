@@ -7,7 +7,6 @@ public class Hand {
 	private Status status = Status.WAIT;
 	private int value;
 	private boolean ace = false;
-	private boolean first = true;
 	private int id;
 	private double bet = 0;
 	private ArrayList<Card> hand = new ArrayList<Card>();
@@ -97,7 +96,6 @@ public class Hand {
 	{
 		return bet;
 	}
-	
 	
 	public void setBet(double bet)
 	{

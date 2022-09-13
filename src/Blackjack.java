@@ -34,23 +34,24 @@ public class Blackjack {
 		Scanner sc= new Scanner(System.in); 
 		for(Player player : players)
 		{
+			// number of hands per player
 			System.out.println("Player " + player.getId() + " please choose a number of hands");
-			//int nb_hands = sc.nextInt();
-			int nb_hands = 1;
+			int nb_hands = sc.nextInt();
 			player.addHand(nb_hands);
 			
 			for(Hand hand : new ArrayList<Hand>(player.getHands()))
 			{
+				// points bet per hand
 				if(player.getPoints() == 0)
 					player.getHands().remove(hand.getId());
 				System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Please choose an amount to bet. You currently have " + player.getPoints() + "💰");
-				//double points = sc.nextDouble();
-				double points = 10;
+				double points = sc.nextDouble();
 				player.addPoints(points*-1);
 				hand.setBet(points);
 			}
 		}
 		
+		// init the dealer's hand and player's hands
 		for(Player player : players)
 			for(Hand hand : player.getHands())
 				hand.addCard(deck.draw(false));
@@ -69,9 +70,9 @@ public class Blackjack {
 			}
 		dealer.addCard(deck.draw(false));
 		
-		//Card dealer = getDealer().getFirstCard();
 		System.out.println( "\nDealer has " + dealer.getFirstCard().toValue() + " : " + dealer.getFirstCard().toString());
 		
+		// check if dealer might have a blackjack
 		if(dealer.getFirstCard().getValue() == Value.ACE)
 		{
 			for(Player player : players)
@@ -79,6 +80,7 @@ public class Blackjack {
 				{
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Value " + hand.getValue() + " : " + hand.toString());
 					
+					// player have enough money to buy the insurance
 					if(player.getPoints() < hand.getBet()*0.5)
 					{
 						System.out.println("You do not have enough points to take an insurance. The game will proceed normally.");
@@ -109,6 +111,7 @@ public class Blackjack {
 				first = false;
 			play = false;
 			
+			// player decides what to do for each one of his hands
 			for(Player player : players)
 			{
 				
@@ -126,12 +129,6 @@ public class Blackjack {
 					
 					switch(choice)
 					{
-					case "DOUBLE":
-						card = deck.draw(false);
-						hand.addCard(card);
-					case "STAY":
-						hand.setStatus(Hand.Status.STOP);
-						break;
 					case "HIT":
 						card = deck.draw(false);
 						hand.addCard(card);
@@ -146,6 +143,13 @@ public class Blackjack {
 						hands.get(hands.size()-1).addCard(deck.draw(false));
 						System.out.println("Player " + player.getId() + ", Hand " + hands.get(hands.size()-1).getId() + " now has a value of " + hands.get(hands.size()-1).getValue() + " : " + hands.get(hands.size()-1).toString());
 						continue;
+					case "DOUBLE":
+						card = deck.draw(false);
+						hand.addCard(card);
+					case "STAY":
+					default:
+						hand.setStatus(Hand.Status.STOP);
+						break;
 					}
 					
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " now has a value of " + hand.getValue() + " : " + hand.toString());
@@ -155,6 +159,7 @@ public class Blackjack {
 		
 		System.out.println( "\nDealer has " + this.dealer.getValue() + " : " + this.dealer.toString());
 		
+		// dealer hits until the value reachs at least 15
 		while(this.dealer.getValue() < 16)
 		{
 			this.dealer.addCard(deck.draw(true));
@@ -170,6 +175,7 @@ public class Blackjack {
 				
 				System.out.println("\nPlayer " + player.getId() + ", Hand " + hand.getId() + " => Bet 💰 " + hand.getBet() + " ; Value " + hand.getValue() + " : " + hand.toString());
 				
+				// choose winner
 				if(hand.getStatus() == Hand.Status.STOP)
 				{
 					if(hand.getValue() > this.dealer.getValue() || this.dealer.getValue() > 21)
@@ -180,6 +186,7 @@ public class Blackjack {
 						hand.Lost();
 				}
 				
+				// results
 				if(hand.getStatus() == Hand.Status.LOST)
 				{
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => LOST");
@@ -200,46 +207,23 @@ public class Blackjack {
 		
 		System.out.println("\nEND OF ROUND");
 		
+		// reset player's hands and dealer's hand
 		for(Player player : players)
 			player.resetHand();
 		this.dealer = new Hand();
 		
+		// shuffle if the cutcard was hit
 		if(deck.check())
 			deck.shuffle();
-	}
-	
-	public void display(boolean first)
-	{
-		ArrayList<Hand> hands = new ArrayList<Hand>();
-		for(Player player : players)
-		{
-			hands = player.getHands();
-			for(Hand hand : hands)
-				System.out.println("Player " + player.getId() + " has " + hand.getValue() + " : " + hand.toString());
-		}
-		
-		if(first)
-		{
-			Card dealer = this.dealer.getFirstCard();
-			System.out.println( "Dealer has " + dealer.toValue() + " : " + dealer.toString());
-		}
-		else
-		{
-			System.out.println( "Dealer has " + this.dealer.getValue() + " : " + this.dealer.toString());
-		}
-		
-		System.out.println("\n");
 	}
 	
 	public static void main(String[] args) {
 		
 		Scanner sc= new Scanner(System.in);  
 		System.out.print("Enter the number of players : ");
-		//int nbp = sc.nextInt();
+		int nbp = sc.nextInt();
 		System.out.print("Enter the number of decks : ");
-		//int nbd = sc.nextInt();
-		
-		int nbp = 1, nbd = 1;
+		int nbd = sc.nextInt();
 		
 		Blackjack bj = new Blackjack(nbd, nbp);
 		bj.start();
