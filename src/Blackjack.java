@@ -19,15 +19,18 @@ public class Blackjack {
 	
 	public void start()
 	{
-		setup();
-		round();		
-	}
-	
-	public void setup()
-	{
 		deck = new Deck();
 		deck.shuffle();
 		
+		while(true)
+		{
+			setup();
+			round();
+		}		
+	}
+	
+	public void setup()
+	{		
 		Scanner sc= new Scanner(System.in); 
 		for(Player player : players)
 		{
@@ -58,7 +61,7 @@ public class Blackjack {
 			{
 				hand.addCard(deck.draw(false));
 				
-				if(hand.getValue() == 21 && getDealer().getValue() != 21)
+				if(hand.getValue() == 21 && this.dealer.getValue() != 21)
 				{
 					player.Bj(hand.getId());
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Amazing Blackjack !");
@@ -66,7 +69,33 @@ public class Blackjack {
 			}
 		dealer.addCard(deck.draw(false));
 		
-		display(true);
+		//Card dealer = getDealer().getFirstCard();
+		System.out.println( "\nDealer has " + dealer.getFirstCard().toValue() + " : " + dealer.getFirstCard().toString());
+		
+		if(dealer.getFirstCard().getValue() == Value.ACE)
+		{
+			for(Player player : players)
+				for(Hand hand : player.getHands())
+				{
+					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Value " + hand.getValue() + " : " + hand.toString());
+					
+					if(player.getPoints() < hand.getBet()*0.5)
+					{
+						System.out.println("You do not have enough points to take an insurance. The game will proceed normally.");
+						continue;
+					}
+					
+					System.out.println("You have " + player.getPoints() + "💰 left. Would you like to take an insurance for " + hand.getBet()*0.5 + "💰 ?");
+					String insurance = sc.nextLine();
+					
+					if(insurance == "YES")
+					{
+						player.addPoints(hand.getBet()*-0.5);
+						if(dealer.getValue() == 21)
+							hand.setStatus(Hand.Status.DRAW);
+					}
+				}
+		}
 	}
 	
 	public void round()
@@ -124,12 +153,12 @@ public class Blackjack {
 			}
 		}
 		
-		System.out.println( "\nDealer has " + getDealer().getValue() + " : " + getDealer().toString());
+		System.out.println( "\nDealer has " + this.dealer.getValue() + " : " + this.dealer.toString());
 		
-		while(getDealer().getValue() < 16)
+		while(this.dealer.getValue() < 16)
 		{
-			getDealer().addCard(deck.draw(true));
-			System.out.println( "Dealer now has " + getDealer().getValue() + " : " + getDealer().toString());
+			this.dealer.addCard(deck.draw(true));
+			System.out.println( "Dealer now has " + this.dealer.getValue() + " : " + this.dealer.toString());
 		}
 		
 		System.out.println("Calculating the results...");
@@ -140,13 +169,12 @@ public class Blackjack {
 			{
 				
 				System.out.println("\nPlayer " + player.getId() + ", Hand " + hand.getId() + " => Bet 💰 " + hand.getBet() + " ; Value " + hand.getValue() + " : " + hand.toString());
-				System.out.println( "\nvs Dealer who has " + getDealer().getValue() + " : " + getDealer().toString());
 				
 				if(hand.getStatus() == Hand.Status.STOP)
 				{
-					if(hand.getValue() > getDealer().getValue() || getDealer().getValue() > 21)
+					if(hand.getValue() > this.dealer.getValue() || this.dealer.getValue() > 21)
 						hand.Won();
-					else if (hand.getValue() == getDealer().getValue())
+					else if (hand.getValue() == this.dealer.getValue())
 						hand.Draw();
 					else
 						hand.Lost();
@@ -172,7 +200,10 @@ public class Blackjack {
 		
 		System.out.println("\nEND OF ROUND");
 		
-		sc.close();
+		for(Player player : players)
+			player.resetHand();
+		this.dealer = new Hand();
+		
 		if(deck.check())
 			deck.shuffle();
 	}
@@ -189,20 +220,15 @@ public class Blackjack {
 		
 		if(first)
 		{
-			Card dealer = getDealer().getFirstCard();
+			Card dealer = this.dealer.getFirstCard();
 			System.out.println( "Dealer has " + dealer.toValue() + " : " + dealer.toString());
 		}
 		else
 		{
-			System.out.println( "Dealer has " + getDealer().getValue() + " : " + getDealer().toString());
+			System.out.println( "Dealer has " + this.dealer.getValue() + " : " + this.dealer.toString());
 		}
 		
 		System.out.println("\n");
-	}
-	
-	public Hand getDealer()
-	{
-		return dealer;
 	}
 	
 	public static void main(String[] args) {
@@ -217,9 +243,10 @@ public class Blackjack {
 		
 		Blackjack bj = new Blackjack(nbd, nbp);
 		bj.start();
+		sc.close();
 		
-		// TODO : sidebets + new round + fix index issue when drawcard + draw no deck
-		// BONUS : stats
+		// TODO : fix index issue when drawcard + draw no deck
+		// BONUS : stats + sidebets
 		
 		// DONE :
 	}

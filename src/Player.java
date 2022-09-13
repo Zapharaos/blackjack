@@ -67,6 +67,13 @@ public class Player {
 		this.points += points;
 	}
 	
+	public void resetHand()
+	{
+		hands.removeAll(hands);
+		hands = new ArrayList<Hand>();
+		System.out.println(hands.size());
+	}
+	
 	public void Bj(int id)
 	{
 		hands.get(id-1).Bj();
