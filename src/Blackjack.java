@@ -32,8 +32,18 @@ public class Blackjack {
 		for(Player player : players)
 		{
 			System.out.println("Player " + player.getId() + " please choose a number of hands");
-			int nb_hands = sc.nextInt();
+			//int nb_hands = sc.nextInt();
+			int nb_hands = 1;
 			player.addHand(nb_hands);
+			
+			for(Hand hand : new ArrayList<Hand>(player.getHands()))
+			{
+				if(player.getPoints() == 0)
+					player.getHands().remove(hand.getId());
+				System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => Please choose an amount to bet. You currently have " + player.getPoints() + "💰");
+				double points = sc.nextDouble();
+				hand.setBet(points);
+			}
 		}
 		
 		for(int i=0; i<2; i++)
@@ -128,14 +138,17 @@ public class Blackjack {
 				if(hand.getStatus() == Hand.Status.LOST)
 				{
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => LOST");
+					player.Lost(hand.getId());
 				}
 				else if(hand.getStatus() == Hand.Status.DRAW)
 				{
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => DRAW");
+					player.Draw(hand.getId());
 				}
 				else
 				{
 					System.out.println("Player " + player.getId() + ", Hand " + hand.getId() + " => WON");
+					player.Won(hand.getId());
 				}
 			}
 		}
@@ -188,7 +201,7 @@ public class Blackjack {
 		Blackjack bj = new Blackjack(nbd, nbp);
 		bj.start();
 		
-		// TODO : bet per hand + new round + blackjack + fix index issue when drawcard + draw no deck
+		// TODO : sidebets + BJ + new round + fix index issue when drawcard + draw no deck
 	}
 	
 }

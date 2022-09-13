@@ -9,7 +9,7 @@ public class Hand {
 	private boolean ace = false;
 	private boolean first = true;
 	private int id;
-	private float bet = 0;
+	private double bet = 0;
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
 	public Hand() {}
@@ -22,11 +22,6 @@ public class Hand {
 	public int getId()
 	{
 		return id;
-	}
-	
-	public float getBet()
-	{
-		return bet;
 	}
 	
 	public ArrayList<Card> getHand()
@@ -96,6 +91,17 @@ public class Hand {
 	public void setStatus(Status status)
 	{
 		this.status = status;
+	}
+	
+	public double getBet()
+	{
+		return bet;
+	}
+	
+	
+	public void setBet(double bet)
+	{
+		this.bet = bet;
 	}
 	
 	public void Won()
