@@ -1,3 +1,5 @@
+package fr.mfreitag.blackjack;
+
 import java.util.ArrayList;
 
 public class Hand {

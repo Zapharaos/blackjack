@@ -1,3 +1,4 @@
+package fr.mfreitag.blackjack;
 
 import java.util.ArrayList; // import the ArrayList class
 

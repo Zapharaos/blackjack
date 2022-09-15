@@ -1,4 +1,4 @@
-
+package fr.mfreitag.blackjack;
 
 public enum Color {
 
